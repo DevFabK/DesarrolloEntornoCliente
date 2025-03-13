@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Ejercicio 6.1</title>
+
+    <style type="text/css">
+    body {font-family: arial, helvetica;}
+    form {
+        width: 600px;
+        margin: 20px auto 0 auto;
+    }
+    label {
+        float: left;
+        width: 200px;
+        font-weight: bold;
+    }
+    label[for="registro_condiciones"], label[for="radiobuttons"] {
+        float: none;
+    }
+	select {
+		font-weight: bold;
+	}
+    input[type="text"],
+    input[type="password"],
+    textarea {
+        width: 360px;
+    }
+    input[type="checkbox"] {
+        margin-left: 200px;
+    }
+    input[type="submit"], input[type="button"] {
+        margin: 20px 0 0 200px;
+        display: block;
+    }
+    </style>
+	<script>
+	
+		function limpiar() {
+			document.forms[0].reset();
+		}
+		
+		function obtenerDatos(elEvento){
+		
+			var evento = elEvento || window.event; 
+			
+			var archivos = document.forms["nRegistro"].elements["archivo"];
+			var txt = "";
+			
+			 for (var i = 0; i < archivos.files.length; i++) {
+
+     				txt += (i+1) + ". file  , ";
+      				var file = archivos.files[i];
+      				if ('name' in file) {
+        				txt += "name: " + file.name + ", ";
+     				 }
+     				 
+      				if ('size' in file) {
+        				txt += "size: " + file.size + " bytes, ";
+      				}
+      				
+      				if ('type' in file) {
+        				txt += "type: " + file.type + ", ";
+      				}
+      				
+      				if ('lastModified' in file) {
+        				txt += "lastModified: " + file.lastModified + ", ";
+      				}
+
+					if ('webkitRelativePath' in file) {
+        				txt += "webkitRelativePath: " + file.webkitRelativePath + "<br />";
+      				}
+    			}
+    			
+    		document.getElementById("info").innerHTML = txt;
+
+			var valorNombre = document.forms["nRegistro"].elements["nombre"].value;
+			var valorApellido = document.forms["nRegistro"].elements["apellido"].value;
+			var valorEmail = document.forms["nRegistro"].elements["email"].value;
+			var valorPassword = document.forms["nRegistro"].elements["password"].value;
+			var valorComentarios = document.forms["nRegistro"].elements["comentarios"].value;
+
+			document.getElementById("info").innerHTML += "Valor Nombre : " + valorNombre + "<br />";
+			document.getElementById("info").innerHTML += "Valor Apellido : " + valorApellido + "<br />";
+			document.getElementById("info").innerHTML += "Valor Email : " + valorEmail + "<br />";
+			document.getElementById("info").innerHTML += "Valor Password : " + valorPassword + "<br />";
+			document.getElementById("info").innerHTML += "Valor Comentarios : " + valorComentarios + "<br />";
+
+			var radios = document.forms["nRegistro"].elements["sexo"];
+			var radioSeleccionado = null;
+			for(var i=0; i<radios.length; i++) { 
+				if (radios[i].checked==true) radioSeleccionado=radios[i];
+			}
+
+			if (radioSeleccionado != null) document.getElementById("info").innerHTML += "Radio seleccionado Valor : " + radioSeleccionado.value + "<br />";
+			else document.getElementById("info").innerHTML += "No hay radio boton seleccionado <br />";
+
+			var desplegable = document.forms["nRegistro"].elements["ciudad"];
+			var indiceDesplegable = desplegable.selectedIndex;
+			
+			var opciones = desplegable.getElementsByTagName("option");
+			
+			if (indiceDesplegable != -1) {
+				var valorOpcionSeleccionada = opciones[indiceDesplegable].value;
+				var textoOpcionSeleccionada = opciones[indiceDesplegable].text;
+			
+				document.getElementById("info").innerHTML += "Elemento select Valor : " + valorOpcionSeleccionada + " Texto : " + textoOpcionSeleccionada + "<br />";
+			} else document.getElementById("info").innerHTML += "No hay ningun elemento seleccionado en el desplegable";
+
+			if (document.forms["nRegistro"].elements["condiciones"].checked) document.getElementById("info").innerHTML += "El checkbox ha sido marcado";
+			else document.getElementById("info").innerHTML += "El checkbox no ha sido marcado";
+
+
+			//evento.preventDefault();
+			return false;
+		}
+	
+		window.onload = function (){
+			document.getElementById("limpiar").onclick = limpiar;
+			document.forms["nRegistro"].onsubmit = obtenerDatos;
+			document.forms["nRegistro"].elements["ciudad"].selectedIndex = -1;
+		}
+	</script>
+	
+</head>
+
+<body>
+	<p id="info"></p>
+    <form action="servidor.php" method="POST" id="registro" name="nRegistro">
+        <fieldset>
+            <legend>Registro</legend>
+			<label>Nombre:</label><input type="text" name="nombre" id="registro_nombre"></input></br></br>
+			<label>Apellido:</label><input type="text" name="apellido" id="registro_apellido"></input></br></br>
+			<label>Email:</label><input type="text" name="email" id="registro_email"></input></br></br>
+			<label>Password:</label><input type="password" name="password" id="registro_password"></input></br></br>
+			<label>Comentarios:</label><textarea name="comentarios" id="registro_comentarios" rows="10"></textarea></br></br>            
+			<label>Sexo:</label><input type="radio" name="sexo" value="Hombre"/><label for="radiobuttons"> Hombre </label></input></br>
+			<label>&nbsp;</label><input type="radio" name="sexo" value="Mujer"/><label for="radiobuttons"> Mujer </label></input></br></br>
+			<label>Ciudad :</label><select name="ciudad" id="ciudad"><option value="A">Alicante</option><option value="CS">Castellón</option> <option value="V">Valencia</option></select></br></br>
+			<label>Archivo :</label><input type="file" name="archivo" multiple /></br></br>
+				
+			<input type="checkbox" name="condiciones" id="registro_condiciones" value="1"><label for="registro_condiciones"> Acepto las condiciones del servicio.</label></input></br>			
+				<input type="submit" value="Enviar">
+			<input type="button" id="limpiar" value="Limpiar formulario">
+        </fieldset>
+    </form>
+</body>
+</html>

@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#search {
+    margin: 20px;
+}
+
+#books {
+    margin-top: 20px;
+}
+
+.book {
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 300px;
+}
+
+.rating {
+    color: gold;
+    font-size: 16px;
+    margin-top: 5px;
+}
